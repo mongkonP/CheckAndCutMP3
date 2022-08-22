@@ -17,7 +17,7 @@ namespace WindowsFormsApp4
         {
             InitializeComponent();
         }
-
+        int rowIndex = 0,oldRowIndex = 0;
         private void button1_Click(object sender, EventArgs e)
         {
             using (FolderBrowserDialog folder = new FolderBrowserDialog())
@@ -30,7 +30,7 @@ namespace WindowsFormsApp4
                     {
                         dataGridView1.Rows.Add(f);
                     });
-
+                    axWindowsMediaPlayer1.URL = dataGridView1[0, 0].Value.ToString();
                 }
             }
         }
@@ -46,8 +46,10 @@ namespace WindowsFormsApp4
                     {
                         try
                         {
-                            axWindowsMediaPlayer1.URL = dataGridView1[0, e.RowIndex + 1].Value.ToString();
-                            
+                            oldRowIndex = rowIndex;
+                            rowIndex++;
+                            RunFile();
+
                         }
                         catch { }
                     }
@@ -57,6 +59,7 @@ namespace WindowsFormsApp4
                 {
                   
                     dataGridView1.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Red;
+                    dataGridView1.Rows[e.RowIndex].Cells[1].Value = "Deleted";
                     File.Delete(f);
                 }
                 catch { }
@@ -70,7 +73,9 @@ namespace WindowsFormsApp4
             {
                 try
                 {
-                    axWindowsMediaPlayer1.URL = dataGridView1[0, e.RowIndex].Value.ToString();
+                    oldRowIndex = rowIndex;
+                    rowIndex= e.RowIndex;
+                    RunFile();
                 }
                 catch { }
             }
@@ -79,6 +84,40 @@ namespace WindowsFormsApp4
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void axWindowsMediaPlayer1_EndOfStream(object sender, AxWMPLib._WMPOCXEvents_EndOfStreamEvent e)
+        {
+            
+           
+
+        }
+
+        private void axWindowsMediaPlayer1_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
+        {
+            if (rowIndex < dataGridView1.RowCount - 1)
+            {
+
+                if (e.newState == 1)
+                {
+                    this.BeginInvoke(new Action(() => {
+                        oldRowIndex = rowIndex;
+                        rowIndex++;
+                        RunFile();
+                    }));
+                }
+            }
+        }
+        void RunFile()
+        {
+            if (dataGridView1[0, oldRowIndex].Value.ToString() != "Deleted")
+            {
+                dataGridView1.Rows[oldRowIndex].DefaultCellStyle.BackColor = Color.Wheat;
+                dataGridView1.Rows[rowIndex].DefaultCellStyle.BackColor = Color.Fuchsia;
+            }
+            axWindowsMediaPlayer1.URL = dataGridView1[0, rowIndex].Value.ToString();
+
+            
         }
     }
 }

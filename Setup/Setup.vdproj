@@ -33,6 +33,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_8766574C35C2149F844F619403F504BE"
+        "OwnerKey" = "8:_7B59A63868684618AF0AAFAD9E07C0CF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_D9F6EFB37FD7429119D2B0D85EEA12CC"
         "OwnerKey" = "8:_07BAC95E05AF1D8DA1339A342994F680"
         "MsmSig" = "8:_UNDEFINED"
@@ -51,14 +57,8 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_EC9BE880863B63263755A116EC837DDA"
-        "OwnerKey" = "8:_7B59A63868684618AF0AAFAD9E07C0CF"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_EC9BE880863B63263755A116EC837DDA"
+        "OwnerKey" = "8:_8766574C35C2149F844F619403F504BE"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -193,6 +193,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8766574C35C2149F844F619403F504BE"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+                "ScatterAssemblies"
+                {
+                    "_8766574C35C2149F844F619403F504BE"
+                    {
+                    "Name" = "8:System.Net.Http.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.Net.Http.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_6041B4A1A75E4C49890334D69D0A9EBF"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D9F6EFB37FD7429119D2B0D85EEA12CC"
             {
             "AssemblyRegister" = "3:1"
@@ -242,37 +273,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EC9BE880863B63263755A116EC837DDA"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
-                "ScatterAssemblies"
-                {
-                    "_EC9BE880863B63263755A116EC837DDA"
-                    {
-                    "Name" = "8:System.Net.Http.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:System.Net.Http.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_6041B4A1A75E4C49890334D69D0A9EBF"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
         }
@@ -343,7 +343,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Setup CheckAndCutMP3"
         "ProductCode" = "8:{3FBCE0EB-1E34-4A88-9B15-ABF524C4C49F}"
-        "PackageCode" = "8:{E0BD05F9-CF6C-4D58-9E7F-367D2D1F6C7A}"
+        "PackageCode" = "8:{8BDE471F-CF0B-41B9-8F27-51879F976D7F}"
         "UpgradeCode" = "8:{E36A64C7-6802-40B6-9999-A343206AFC24}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
