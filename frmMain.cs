@@ -24,13 +24,20 @@ namespace CheckAndCutMP3
             {
                 if (folder.ShowDialog() == DialogResult.OK)
                 {
-                    textBox1.Text = folder.SelectedPath;
-                    Directory.GetFiles(textBox1.Text, "*.mp3", SearchOption.AllDirectories).ToList<string>()
-                    .ForEach(f =>
-                    {
-                        dataGridView1.Rows.Add(f);
-                    });
-                    axWindowsMediaPlayer1.URL = dataGridView1[0, 0].Value.ToString();
+                   TORServices.Forms.Forms.frmWaitFormDialog frm = new TORServices.Forms.Forms.frmWaitFormDialog(() =>
+                     {
+
+                         textBox1.Invoke(new Action(()=>textBox1.Text = folder.SelectedPath)) ;
+                         Directory.GetFiles(textBox1.Text, "*.mp3", SearchOption.AllDirectories).ToList<string>()
+                         .ForEach(f =>
+                         {
+                             dataGridView1.Invoke(new Action(()=>dataGridView1.Rows.Add(f))) ;
+                         });
+                         axWindowsMediaPlayer1.URL = dataGridView1[0, 0].Value.ToString();
+
+                     }) ;
+                    frm.ShowDialog();
+                       
                 }
             }
         }
