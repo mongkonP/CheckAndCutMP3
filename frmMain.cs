@@ -8,8 +8,10 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TORServices.Ext;
 
 namespace CheckAndCutMP3
 {
@@ -18,6 +20,7 @@ namespace CheckAndCutMP3
         public frmMain()
         {
             InitializeComponent();
+            axWindowsMediaPlayer1.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(axWindowsMediaPlayer1_PlayStateChange);
         }
         int rowIndex = 0,oldRowIndex = 0;
 
@@ -65,27 +68,50 @@ namespace CheckAndCutMP3
         }
         private void button1_Click(object sender, EventArgs e)
         {
+            
             using (FolderBrowserDialog folder = new FolderBrowserDialog())
             {
                 if (folder.ShowDialog() == DialogResult.OK)
                 {
                     dataGridView1.Invoke(new Action(() => dataGridView1.Rows.Clear()));
+                    textBox1.Invoke(new Action(() => textBox1.Text = folder.SelectedPath));
+                    lblStatus.Invoke(new Action(() => lblStatus.Text = "Adding file"));
                     TORServices.Forms.Forms.frmWaitFormDialog frm = new TORServices.Forms.Forms.frmWaitFormDialog(() =>
                      {
 
-                         textBox1.Invoke(new Action(()=>textBox1.Text = folder.SelectedPath)) ;
-                         Directory.GetFiles(textBox1.Text, "*.mp3", SearchOption.AllDirectories).ToList<string>()
+                         //https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.taskscheduler?view=net-5.0
+                         // Create a scheduler that uses two threads.
+                         LimitedConcurrencyLevelTaskScheduler lcts = new LimitedConcurrencyLevelTaskScheduler(30);
+                        List<Task> tasks = new List<Task>();
+
+                        // Create a TaskFactory and pass it our custom scheduler.
+                        TaskFactory factory = new TaskFactory(lcts);
+                        CancellationTokenSource cts = new CancellationTokenSource();
+
+                        Directory.GetFiles(textBox1.Text, "*.mp3", SearchOption.AllDirectories).ToList<string>()
                          .ForEach(f =>
                          {
-                             dataGridView1.Invoke(new Action(()=>dataGridView1.Rows.Add(f, BytesToString( f), GetAudioDuration(f)))) ;
+                             Task t = factory.StartNew(() => {
+                              
+                                 dataGridView1.Invoke(new Action(() => dataGridView1.Rows.Add(f, BytesToString(f), "")));//GetAudioDuration(f)
+                                 lblStatus.Invoke(new  Action(()=>lblStatus.Text = "Add:" + f))  ;
+                             }, cts.Token);
+                             tasks.Add(t);
                          });
-                         axWindowsMediaPlayer1.URL = dataGridView1[0, 0].Value.ToString();
+                        // Wait for the tasks to complete before displaying a completion message.
+                        Task.WaitAll(tasks.ToArray());
+                        cts.Dispose();
+                          lblStatus.Invoke(new Action(() => lblStatus.Text = "Add file complete"));
+                        axWindowsMediaPlayer1.URL = dataGridView1[0, 0].Value.ToString();
 
-                     }) ;
-                    frm.ShowDialog();
-                       
+
+
+                            }) ;
+                           frm.ShowDialog();
+                    
                 }
             }
+           
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -139,12 +165,7 @@ namespace CheckAndCutMP3
 
         }
 
-        private void axWindowsMediaPlayer1_EndOfStream(object sender, AxWMPLib._WMPOCXEvents_EndOfStreamEvent e)
-        {
-            
-           
 
-        }
 
         private void axWindowsMediaPlayer1_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
         {
